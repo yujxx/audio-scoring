@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Scoring System</title>
+    <title>Conversation Scoring System</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -18,6 +18,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             display: none;
+            margin-bottom: 20px;
         }
         .page.active {
             display: block;
@@ -72,30 +73,70 @@
         .progress {
             text-align: center;
             margin: 20px 0;
+            color: #666;
         }
-        #results {
-            margin-top: 20px;
+        .progress-bars {
+            display: flex;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        .progress-section {
+            flex: 1;
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+        }
+        .progress-section.completed {
+            background: #4CAF50;
+        }
+        .progress-section.current {
+            background: #2196F3;
+        }
+        .group-title {
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
         }
     </style>
 </head>
 <body>
+    <!-- 介绍页 -->
     <div id="introPage" class="page active">
-        <h1>音频评分系统</h1>
-        <h2>评分标准说明：</h2>
+        <h1>Conversation Scoring System</h1>
+        <h2>Guidline</h2>
         <ul>
+            <li>Please rate it after listening to both audio segments carefully.</li>
+            <li>Please ignore the audio quality, such as background noise and other issues.</li>
+            <li>Focus mainly on the emotion, style and expression fits the current context.</li>
+            <li>Rating scale: -3 to +3.</li>
+            <li>Negative numbers indicate that the left audio segment is better.</li>
+            <li>Positive numbers indicate that the right audio segment is better.</li>
+            <li>The larger the absolute value of the number, the more pronounced the difference./li>
             <li>每次将呈现两段音频供您比较</li>
             <li>请仔细听完两段音频后进行评分</li>
+            <li>请忽略音频质量，如杂音等问题。</li>
+            <li>主要关注说话的语气，风格，表达是否符合当前语境</li>
             <li>评分范围：-3 到 +3</li>
             <li>负数表示左边音频更好</li>
             <li>正数表示右边音频更好</li>
             <li>数字绝对值越大表示差异越明显</li>
         </ul>
-        <button onclick="startTest()">开始评分</button>
+        <button onclick="startTest()">Start</button>
     </div>
 
+    <!-- 测试页面 -->
     <div id="testPage" class="page">
+        <div class="progress-bars">
+            <div class="progress-section" id="section1"></div>
+            <div class="progress-section" id="section2"></div>
+        </div>
+        
+        <h2 class="group-title" id="groupTitle"></h2>
+        
         <div class="progress">
-            <span id="currentPair">1</span> / <span id="totalPairs">10</span>
+            当前进度：第 <span id="currentGroup">1</span> 组，
+            第 <span id="currentPair">1</span> / <span id="totalPairs">5</span> 对
         </div>
         
         <div class="audio-pair">
@@ -131,56 +172,96 @@
         </div>
     </div>
 
+    <!-- 结果页面 -->
     <div id="resultsPage" class="page">
-        <h2>评分完成</h2>
-        <p>感谢您的参与！</p>
+        <h2>Finished!</h2>
+        <p>Thanks for your time！</p>
         <div id="results"></div>
+        <button onclick="window.location.reload()">Home</button>
     </div>
 
     <script>
-        const audioPairs = [
-            { 
-                audioA: "url1", 
-                audioB: "url2", 
-                textA: "文本内容1", 
-                textB: "文本内容2" 
-            },
-            // 添加更多音频对...
+        // 音频组数据
+        const audioGroups = [
+            {
+                title: "Listening and Rating",
+                pairs: [
+                    {
+                        audioA: "generic/audio_0.mp3",
+                        audioB: "generic_noinstruct/audio_0.mp3",
+                    },
+                    {
+                        audioA: "generic/audio_1.mp3",
+                        audioB: "generic_noinstruct/audio_1.mp3",
+                    }
+                    // 可以添加更多音频对
+                ]
+            }
         ];
 
+        let currentGroupIndex = 0;
         let currentPairIndex = 0;
-        const scores = new Array(audioPairs.length).fill(null);
+        let scores = audioGroups.map(group => new Array(group.pairs.length).fill(null));
+
+        function updateProgressBars() {
+            const sections = document.querySelectorAll('.progress-section');
+            sections.forEach((section, index) => {
+                section.className = 'progress-section';
+                if (index < currentGroupIndex) {
+                    section.classList.add('completed');
+                } else if (index === currentGroupIndex) {
+                    section.classList.add('current');
+                }
+            });
+        }
 
         function startTest() {
             document.getElementById('introPage').classList.remove('active');
             document.getElementById('testPage').classList.add('active');
-            document.getElementById('totalPairs').textContent = audioPairs.length;
             loadAudioPair();
         }
 
         function loadAudioPair() {
-            const pair = audioPairs[currentPairIndex];
+            const group = audioGroups[currentGroupIndex];
+            const pair = group.pairs[currentPairIndex];
+            
+            document.getElementById('groupTitle').textContent = group.title;
             document.getElementById('audioA').src = pair.audioA;
             document.getElementById('audioB').src = pair.audioB;
             document.getElementById('textA').textContent = pair.textA;
             document.getElementById('textB').textContent = pair.textB;
-            document.getElementById('currentPair').textContent = currentPairIndex + 1;
             
-            // Reset score buttons
+            document.getElementById('currentGroup').textContent = currentGroupIndex + 1;
+            document.getElementById('currentPair').textContent = currentPairIndex + 1;
+            document.getElementById('totalPairs').textContent = group.pairs.length;
+            
+            updateProgressBars();
+            
+            // 更新按钮状态
             document.querySelectorAll('.score-button').forEach(btn => {
                 btn.classList.remove('selected');
-                if (scores[currentPairIndex] === parseInt(btn.textContent)) {
+                if (scores[currentGroupIndex][currentPairIndex] === parseInt(btn.textContent)) {
                     btn.classList.add('selected');
                 }
             });
 
-            // Update navigation buttons
-            document.getElementById('prevButton').disabled = currentPairIndex === 0;
-            document.getElementById('nextButton').disabled = scores[currentPairIndex] === null;
+            document.getElementById('prevButton').disabled = 
+                currentGroupIndex === 0 && currentPairIndex === 0;
+            document.getElementById('nextButton').disabled = 
+                scores[currentGroupIndex][currentPairIndex] === null;
+
+            const isLastPair = currentGroupIndex === audioGroups.length - 1 && 
+                             currentPairIndex === audioGroups[currentGroupIndex].pairs.length - 1;
+
+            if (isLastPair) {
+                document.getElementById('nextButton').textContent = '提交';
+            } else {
+                document.getElementById('nextButton').textContent = '下一对';
+            }
         }
 
         function setScore(score) {
-            scores[currentPairIndex] = score;
+            scores[currentGroupIndex][currentPairIndex] = score;
             document.querySelectorAll('.score-button').forEach(btn => {
                 btn.classList.remove('selected');
                 if (parseInt(btn.textContent) === score) {
@@ -188,28 +269,29 @@
                 }
             });
             document.getElementById('nextButton').disabled = false;
-
-            // If all pairs are scored, enable submission
-            if (scores.every(score => score !== null)) {
-                const nextButton = document.getElementById('nextButton');
-                if (currentPairIndex === audioPairs.length - 1) {
-                    nextButton.textContent = '提交';
-                    nextButton.onclick = submitScores;
-                }
-            }
         }
 
         function prevPair() {
             if (currentPairIndex > 0) {
                 currentPairIndex--;
-                loadAudioPair();
+            } else if (currentGroupIndex > 0) {
+                currentGroupIndex--;
+                currentPairIndex = audioGroups[currentGroupIndex].pairs.length - 1;
             }
+            loadAudioPair();
         }
 
         function nextPair() {
-            if (currentPairIndex < audioPairs.length - 1) {
+            const currentGroup = audioGroups[currentGroupIndex];
+            if (currentPairIndex < currentGroup.pairs.length - 1) {
                 currentPairIndex++;
                 loadAudioPair();
+            } else if (currentGroupIndex < audioGroups.length - 1) {
+                currentGroupIndex++;
+                currentPairIndex = 0;
+                loadAudioPair();
+            } else {
+                submitScores();
             }
         }
 
@@ -217,36 +299,31 @@
             document.getElementById('testPage').classList.remove('active');
             document.getElementById('resultsPage').classList.add('active');
 
-            // Calculate statistics
-            const total = scores.reduce((a, b) => a + b, 0);
-            const average = total / scores.length;
-            const variance = scores.reduce((a, b) => a + Math.pow(b - average, 2), 0) / scores.length;
-            const stdDev = Math.sqrt(variance);
+            let resultsHtml = '';
+            scores.forEach((groupScores, groupIndex) => {
+                const total = groupScores.reduce((a, b) => a + b, 0);
+                const average = total / groupScores.length;
+                const variance = groupScores.reduce((a, b) => a + Math.pow(b - average, 2), 0) / groupScores.length;
+                const stdDev = Math.sqrt(variance);
 
-            // Display results
-            document.getElementById('results').innerHTML = `
-                <h3>统计结果：</h3>
-                <p>平均分：${average.toFixed(2)}</p>
-                <p>标准差：${stdDev.toFixed(2)}</p>
-                <p>详细评分：${scores.join(', ')}</p>
-            `;
-
-            // 这里可以添加将数据发送到服务器的代码
-            // sendToServer(scores);
-        }
-
-        // Optional: Add this function if you need to send data to a server
-        function sendToServer(scores) {
-            fetch('/api/submit-scores', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    scores: scores,
-                    timestamp: new Date().toISOString()
-                })
+                resultsHtml += `
+                    <h3>${audioGroups[groupIndex].title}Result：</h3>
+                    <p>Mean：${average.toFixed(2)}</p>
+                    <p>Std：${stdDev.toFixed(2)}</p>
+                    <p>Details：${groupScores.join(', ')}</p>
+                    <hr>
+                `;
             });
+
+            document.getElementById('results').innerHTML = resultsHtml;
+
+            // 发送数据到服务器
+            const data = {
+                timestamp: new Date().toISOString(),
+                scores: scores
+            };
+            console.log('Sending to server:', data);
+            // 实际发送数据的代码
         }
     </script>
 </body>
