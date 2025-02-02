@@ -167,8 +167,8 @@
         </div>
 
         <div class="navigation">
-            <button onclick="prevPair()" id="prevButton" disabled>上一对</button>
-            <button onclick="nextPair()" id="nextButton" disabled>下一对</button>
+            <button onclick="prevPair()" id="prevButton" disabled>Previous</button>
+            <button onclick="nextPair()" id="nextButton" disabled>Next</button>
         </div>
     </div>
 
@@ -274,7 +274,6 @@
             document.getElementById('introPage').classList.remove('active');
             document.getElementById('testPage').classList.add('active');
             loadAudioPair();
-            //loadCurrentPair();
         }
         function loadAudioPair() {
             const group = audioGroups[currentGroupIndex];
@@ -302,7 +301,7 @@
             // 显示加载状态
             const loadingMessage = document.createElement('div');
             loadingMessage.className = 'loading-message';
-            loadingMessage.textContent = '音频加载中...';
+            loadingMessage.textContent = 'Audio loading...';
             document.body.appendChild(loadingMessage);
             
             // 使用 Promise 处理音频加载
@@ -333,8 +332,8 @@
                     preloadB.src = nextPair.audioB;
                 }
             }).catch(error => {
-                loadingMessage.textContent = '音频加载失败，请重试';
-                console.error('音频加载错误:', error);
+                loadingMessage.textContent = 'The audio failed to load, please go back to previous page and click next again.';
+                console.error('Error:', error);
                 setTimeout(() => loadingMessage.remove(), 3000);
             });
             
@@ -355,6 +354,7 @@
             document.getElementById('nextButton').disabled = scores[currentGroupIndex][currentPairIndex] === null;
             document.getElementById('nextButton').textContent = isLastPair ? 'submit' : 'next';
         }
+        
         function loadAudioPair1() {
             const group = audioGroups[currentGroupIndex];
             const pair = group.pairs[currentPairIndex];
@@ -390,74 +390,6 @@
             } else {
                 document.getElementById('nextButton').textContent = 'next';
             }
-        }
-
-        // 加载音频对
-        function loadCurrentPair() {
-            showLoadingStatus('音频加载中...');
-            
-            const audioA = document.getElementById('audioA');
-            const audioB = document.getElementById('audioB');
-            
-            // 清除现有源
-            audioA.src = '';
-            audioB.src = '';
-            
-            // 延迟加载新音频
-            setTimeout(() => {
-                const pair = audioGroups[currentGroup][currentPair];
-                if (pair) {
-                    audioA.src = pair.audioA;
-                    audioB.src = pair.audioB;
-                    
-                    updateButtonStates();
-                    updateProgress();
-                }
-            }, 100);
-
-            // 预加载下一对
-            if (currentPair + 1 < audioGroups[currentGroup].length) {
-                preloadNextPair();
-            }
-        }
-
-        // 预加载下一对音频
-        function preloadNextPair() {
-            const nextPair = audioGroups[currentGroup][currentPair + 1];
-            if (nextPair) {
-                const preloadA = new Audio();
-                const preloadB = new Audio();
-                preloadA.src = nextPair.audioA;
-                preloadB.src = nextPair.audioB;
-            }
-        }
-
-        // 显示加载状态
-        function showLoadingStatus(message) {
-            let status = document.querySelector('.loading-status');
-            if (!status) {
-                status = document.createElement('div');
-                status.className = 'loading-status';
-                document.body.appendChild(status);
-            }
-            status.textContent = message;
-            
-            // 3秒后自动移除
-            setTimeout(() => {
-                status.remove();
-            }, 3000);
-        }
-
-        // 更新按钮状态
-        function updateButtonStates() {
-            document.getElementById('prevButton').disabled = currentPair === 0;
-            document.getElementById('nextButton').disabled = 
-                currentPair === audioGroups[currentGroup].length - 1;
-        }
-        // 更新进度显示
-        function updateProgress() {
-            document.getElementById('groupNumber').textContent = currentGroup + 1;
-            document.getElementById('pairNumber').textContent = currentPair + 1;
         }
         
         function setScore(score) {
