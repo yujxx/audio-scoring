@@ -273,7 +273,8 @@
         function startTest() {
             document.getElementById('introPage').classList.remove('active');
             document.getElementById('testPage').classList.add('active');
-            loadAudioPair();
+            //loadAudioPair();
+            loadCurrentPair();
         }
 
         function loadAudioPair() {
@@ -313,6 +314,74 @@
             }
         }
 
+        // 加载音频对
+        function loadCurrentPair() {
+            showLoadingStatus('音频加载中...');
+            
+            const audioA = document.getElementById('audioA');
+            const audioB = document.getElementById('audioB');
+            
+            // 清除现有源
+            audioA.src = '';
+            audioB.src = '';
+            
+            // 延迟加载新音频
+            setTimeout(() => {
+                const pair = audioGroups[currentGroup][currentPair];
+                if (pair) {
+                    audioA.src = pair.audioA;
+                    audioB.src = pair.audioB;
+                    
+                    updateButtonStates();
+                    updateProgress();
+                }
+            }, 100);
+
+            // 预加载下一对
+            if (currentPair + 1 < audioGroups[currentGroup].length) {
+                preloadNextPair();
+            }
+        }
+
+        // 预加载下一对音频
+        function preloadNextPair() {
+            const nextPair = audioGroups[currentGroup][currentPair + 1];
+            if (nextPair) {
+                const preloadA = new Audio();
+                const preloadB = new Audio();
+                preloadA.src = nextPair.audioA;
+                preloadB.src = nextPair.audioB;
+            }
+        }
+
+        // 显示加载状态
+        function showLoadingStatus(message) {
+            let status = document.querySelector('.loading-status');
+            if (!status) {
+                status = document.createElement('div');
+                status.className = 'loading-status';
+                document.body.appendChild(status);
+            }
+            status.textContent = message;
+            
+            // 3秒后自动移除
+            setTimeout(() => {
+                status.remove();
+            }, 3000);
+        }
+
+        // 更新按钮状态
+        function updateButtonStates() {
+            document.getElementById('prevButton').disabled = currentPair === 0;
+            document.getElementById('nextButton').disabled = 
+                currentPair === audioGroups[currentGroup].length - 1;
+        }
+        // 更新进度显示
+        function updateProgress() {
+            document.getElementById('groupNumber').textContent = currentGroup + 1;
+            document.getElementById('pairNumber').textContent = currentPair + 1;
+        }
+        
         function setScore(score) {
             scores[currentGroupIndex][currentPairIndex] = score;
             document.querySelectorAll('.score-button').forEach(btn => {
