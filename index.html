@@ -145,14 +145,14 @@
                 <audio id="audioA" controls>
                     <source src="" type="audio/mpeg">
                 </audio>
-                <p id="textA"></p>
+                
             </div>
             <div class="audio-container">
                 <h3>音频 B</h3>
                 <audio id="audioB" controls>
                     <source src="" type="audio/mpeg">
                 </audio>
-                <p id="textB"></p>
+                
             </div>
         </div>
 
@@ -228,8 +228,6 @@
             document.getElementById('groupTitle').textContent = group.title;
             document.getElementById('audioA').src = pair.audioA;
             document.getElementById('audioB').src = pair.audioB;
-            document.getElementById('textA').textContent = pair.textA;
-            document.getElementById('textB').textContent = pair.textB;
             
             document.getElementById('currentGroup').textContent = currentGroupIndex + 1;
             document.getElementById('currentPair').textContent = currentPairIndex + 1;
@@ -254,9 +252,9 @@
                              currentPairIndex === audioGroups[currentGroupIndex].pairs.length - 1;
 
             if (isLastPair) {
-                document.getElementById('nextButton').textContent = '提交';
+                document.getElementById('nextButton').textContent = 'submit';
             } else {
-                document.getElementById('nextButton').textContent = '下一对';
+                document.getElementById('nextButton').textContent = 'next';
             }
         }
 
