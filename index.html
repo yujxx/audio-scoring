@@ -272,28 +272,6 @@
                 ]
             }
         ];
-        // 创建分组后的数据
-        const allGroups = createAudioGroups(originalPairs, 20);
-        
-        // 随机选择一个组
-        const randomGroupIndex = Math.floor(Math.random() * allGroups.length);
-        const audioGroups = [allGroups[randomGroupIndex]];
-        
-        let currentGroupIndex = 0;
-        let currentPairIndex = 0;
-        let scores = [new Array(20).fill(null)];
-
-        function updateProgressBars() {
-            const sections = document.querySelectorAll('.progress-section');
-            sections.forEach((section, index) => {
-                section.className = 'progress-section';
-                if (index < currentGroupIndex) {
-                    section.classList.add('completed');
-                } else if (index === currentGroupIndex) {
-                    section.classList.add('current');
-                }
-            });
-        }
 
         // 将原始音频对数组分组
         function createAudioGroups(pairs, groupSize = 20) {
@@ -307,6 +285,23 @@
             }
             return groups;
         }
+        
+        // 创建分组后的数据
+        const allGroups = createAudioGroups(originalPairs, 20);
+        
+        // 随机选择一个组
+        const randomGroupIndex = Math.floor(Math.random() * allGroups.length);
+        const audioGroups = [allGroups[randomGroupIndex]];
+        
+        let currentGroupIndex = 0;
+        let currentPairIndex = 0;
+        let scores = [new Array(20).fill(null)];
+
+        function updateProgressBars() {
+            const progress = ((currentPairIndex + 1) / audioGroups[0].pairs.length) * 100;
+            document.querySelector('.progress-section').style.width = `${progress}%`;
+        }
+
         
         // 在开始测试时显示当前组的信息
         function startTest() {
@@ -327,7 +322,6 @@
             
             // 更新界面文本
             document.getElementById('groupTitle').textContent = group.title;
-            document.getElementById('currentGroup').textContent = currentGroupIndex + 1;
             document.getElementById('currentPair').textContent = currentPairIndex + 1;
             document.getElementById('totalPairs').textContent = group.pairs.length;
             
@@ -392,50 +386,10 @@
             });
             
             // 更新导航按钮状态
-            const isFirstPair = currentGroupIndex === 0 && currentPairIndex === 0;
-            const isLastPair = currentGroupIndex === audioGroups.length - 1 && 
-                              currentPairIndex === audioGroups[currentGroupIndex].pairs.length - 1;
-            
-            document.getElementById('prevButton').disabled = isFirstPair;
+            document.getElementById('prevButton').disabled = currentPairIndex === 0;
             document.getElementById('nextButton').disabled = scores[currentGroupIndex][currentPairIndex] === null;
-            document.getElementById('nextButton').textContent = isLastPair ? 'submit' : 'next';
-        }
-        
-        function loadAudioPair1() {
-            const group = audioGroups[currentGroupIndex];
-            const pair = group.pairs[currentPairIndex];
-            
-            document.getElementById('groupTitle').textContent = group.title;
-            document.getElementById('audioA').src = pair.audioA;
-            document.getElementById('audioB').src = pair.audioB;
-            
-            document.getElementById('currentGroup').textContent = currentGroupIndex + 1;
-            document.getElementById('currentPair').textContent = currentPairIndex + 1;
-            document.getElementById('totalPairs').textContent = group.pairs.length;
-            
-            updateProgressBars();
-            
-            // 更新按钮状态
-            document.querySelectorAll('.score-button').forEach(btn => {
-                btn.classList.remove('selected');
-                if (scores[currentGroupIndex][currentPairIndex] === parseInt(btn.textContent)) {
-                    btn.classList.add('selected');
-                }
-            });
-
-            document.getElementById('prevButton').disabled = 
-                currentGroupIndex === 0 && currentPairIndex === 0;
-            document.getElementById('nextButton').disabled = 
-                scores[currentGroupIndex][currentPairIndex] === null;
-
-            const isLastPair = currentGroupIndex === audioGroups.length - 1 && 
-                             currentPairIndex === audioGroups[currentGroupIndex].pairs.length - 1;
-
-            if (isLastPair) {
-                document.getElementById('nextButton').textContent = 'submit';
-            } else {
-                document.getElementById('nextButton').textContent = 'next';
-            }
+            document.getElementById('nextButton').textContent = 
+                currentPairIndex === group.pairs.length - 1 ? 'Submit' : 'Next';
         }
         
         function setScore(score) {
@@ -452,27 +406,18 @@
         function prevPair() {
             if (currentPairIndex > 0) {
                 currentPairIndex--;
-            } else if (currentGroupIndex > 0) {
-                currentGroupIndex--;
-                currentPairIndex = audioGroups[currentGroupIndex].pairs.length - 1;
+                loadAudioPair();
             }
-            loadAudioPair();
         }
-
         function nextPair() {
             const currentGroup = audioGroups[currentGroupIndex];
             if (currentPairIndex < currentGroup.pairs.length - 1) {
                 currentPairIndex++;
                 loadAudioPair();
-            } else if (currentGroupIndex < audioGroups.length - 1) {
-                currentGroupIndex++;
-                currentPairIndex = 0;
-                loadAudioPair();
             } else {
                 submitScores();
             }
         }
-
         function submitScores() {
             document.getElementById('testPage').classList.remove('active');
             document.getElementById('resultsPage').classList.add('active');
