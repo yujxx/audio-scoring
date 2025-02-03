@@ -182,81 +182,106 @@
 
     <script>
         // 音频组数据
-        const audioGroups = [
+        const originalPairs = [
             {
                 title: "Listening and Rating",
                 pairs: [
-                    {
-                        audioA: "generic_noinstruct/audio_0.wav",
-                        audioB: "generic/audio_0.wav",
-                    },
-                    {
-                        audioA: "generic_noinstruct/audio_1.wav",
-                        audioB: "generic/audio_1.wav",
-                    },
-                    { audioA: "generic_noinstruct/audio_2.wav", audioB: "generic/audio_2.wav" },
-                    { audioA: "generic_noinstruct/audio_3.wav", audioB: "generic/audio_3.wav" },
-                    { audioA: "generic_noinstruct/audio_4.wav", audioB: "generic/audio_4.wav" },
-                    { audioA: "generic_noinstruct/audio_5.wav", audioB: "generic/audio_5.wav" },
-                    { audioA: "generic_noinstruct/audio_6.wav", audioB: "generic/audio_6.wav" },
-                    { audioA: "generic_noinstruct/audio_7.wav", audioB: "generic/audio_7.wav" },
-                    { audioA: "generic_noinstruct/audio_8.wav", audioB: "generic/audio_8.wav" },
-                    { audioA: "generic_noinstruct/audio_9.wav", audioB: "generic/audio_9.wav" },
-                    { audioA: "generic_noinstruct/audio_10.wav", audioB: "generic/audio_10.wav" },
-                    { audioA: "generic_noinstruct/audio_11.wav", audioB: "generic/audio_11.wav" },
-                    { audioA: "generic_noinstruct/audio_12.wav", audioB: "generic/audio_12.wav" },
-                    { audioA: "generic_noinstruct/audio_13.wav", audioB: "generic/audio_13.wav" },
-                    { audioA: "generic_noinstruct/audio_14.wav", audioB: "generic/audio_14.wav" },
-                    { audioA: "generic_noinstruct/audio_15.wav", audioB: "generic/audio_15.wav" },
-                    { audioA: "generic_noinstruct/audio_16.wav", audioB: "generic/audio_16.wav" },
-                    { audioA: "generic_noinstruct/audio_17.wav", audioB: "generic/audio_17.wav" },
-                    { audioA: "generic_noinstruct/audio_18.wav", audioB: "generic/audio_18.wav" },
-                    { audioA: "generic_noinstruct/audio_19.wav", audioB: "generic/audio_19.wav" },
-                    { audioA: "generic_noinstruct/audio_20.wav", audioB: "generic/audio_20.wav" },
-                    { audioA: "generic_noinstruct/audio_21.wav", audioB: "generic/audio_21.wav" },
-                    { audioA: "generic_noinstruct/audio_22.wav", audioB: "generic/audio_22.wav" },
-                    { audioA: "generic_noinstruct/audio_23.wav", audioB: "generic/audio_23.wav" },
-                    { audioA: "generic_noinstruct/audio_24.wav", audioB: "generic/audio_24.wav" },
-                    { audioA: "generic_noinstruct/audio_25.wav", audioB: "generic/audio_25.wav" },
-                    { audioA: "generic_noinstruct/audio_26.wav", audioB: "generic/audio_26.wav" },
-                    { audioA: "generic_noinstruct/audio_27.wav", audioB: "generic/audio_27.wav" },
-                    { audioA: "generic_noinstruct/audio_28.wav", audioB: "generic/audio_28.wav" },
-                    { audioA: "generic_noinstruct/audio_29.wav", audioB: "generic/audio_29.wav" },
-                    { audioA: "generic_noinstruct/audio_30.wav", audioB: "generic/audio_30.wav" },
-                    { audioA: "generic_noinstruct/audio_31.wav", audioB: "generic/audio_31.wav" },
-                    { audioA: "generic_noinstruct/audio_32.wav", audioB: "generic/audio_32.wav" },
-                    { audioA: "generic_noinstruct/audio_33.wav", audioB: "generic/audio_33.wav" },
-                    { audioA: "generic_noinstruct/audio_34.wav", audioB: "generic/audio_34.wav" },
-                    { audioA: "generic_noinstruct/audio_35.wav", audioB: "generic/audio_35.wav" },
-                    { audioA: "generic_noinstruct/audio_36.wav", audioB: "generic/audio_36.wav" },
-                    { audioA: "generic_noinstruct/audio_37.wav", audioB: "generic/audio_37.wav" },
-                    { audioA: "generic_noinstruct/audio_38.wav", audioB: "generic/audio_38.wav" },
-                    { audioA: "generic_noinstruct/audio_39.wav", audioB: "generic/audio_39.wav" },
-                    { audioA: "generic_noinstruct/audio_40.wav", audioB: "generic/audio_40.wav" },
-                    { audioA: "generic_noinstruct/audio_41.wav", audioB: "generic/audio_41.wav" },
-                    { audioA: "generic_noinstruct/audio_42.wav", audioB: "generic/audio_42.wav" },
-                    { audioA: "generic_noinstruct/audio_43.wav", audioB: "generic/audio_43.wav" },
-                    { audioA: "generic_noinstruct/audio_44.wav", audioB: "generic/audio_44.wav" },
-                    { audioA: "generic_noinstruct/audio_45.wav", audioB: "generic/audio_45.wav" },
-                    { audioA: "generic_noinstruct/audio_46.wav", audioB: "generic/audio_46.wav" },
-                    { audioA: "generic_noinstruct/audio_47.wav", audioB: "generic/audio_47.wav" },
-                    { audioA: "generic_noinstruct/audio_48.wav", audioB: "generic/audio_48.wav" },
-                    { audioA: "generic_noinstruct/audio_49.wav", audioB: "generic/audio_49.wav" },
-                    { audioA: "generic_noinstruct/audio_50.wav", audioB: "generic/audio_50.wav" },
-                    { audioA: "generic_noinstruct/audio_51.wav", audioB: "generic/audio_51.wav" },
-                    { audioA: "generic_noinstruct/audio_52.wav", audioB: "generic/audio_52.wav" },
-                    { audioA: "generic_noinstruct/audio_53.wav", audioB: "generic/audio_53.wav" },
-                    { audioA: "generic_noinstruct/audio_54.wav", audioB: "generic/audio_54.wav" },
-                    { audioA: "generic_noinstruct/audio_55.wav", audioB: "generic/audio_55.wav" },
-                    { audioA: "generic_noinstruct/audio_56.wav", audioB: "generic/audio_56.wav" }
+                    { audioA: "generic_2/generic_n/audio_0.wav", audioB: "generic_2/generic/audio_0.wav" },
+                    { audioA: "generic_2/generic_n/audio_1.wav", audioB: "generic_2/generic/audio_1.wav" },
+                    { audioA: "generic_2/generic_n/audio_2.wav", audioB: "generic_2/generic/audio_2.wav" },
+                    { audioA: "generic_2/generic_n/audio_3.wav", audioB: "generic_2/generic/audio_3.wav" },
+                    { audioA: "generic_2/generic_n/audio_4.wav", audioB: "generic_2/generic/audio_4.wav" },
+                    { audioA: "generic_2/generic_n/audio_5.wav", audioB: "generic_2/generic/audio_5.wav" },
+                    { audioA: "generic_2/generic_n/audio_6.wav", audioB: "generic_2/generic/audio_6.wav" },
+                    { audioA: "generic_2/generic_n/audio_7.wav", audioB: "generic_2/generic/audio_7.wav" },
+                    { audioA: "generic_2/generic_n/audio_8.wav", audioB: "generic_2/generic/audio_8.wav" },
+                    { audioA: "generic_2/generic_n/audio_9.wav", audioB: "generic_2/generic/audio_9.wav" },
+                    { audioA: "generic_2/generic_n/audio_10.wav", audioB: "generic_2/generic/audio_10.wav" },
+                    { audioA: "generic_2/generic_n/audio_11.wav", audioB: "generic_2/generic/audio_11.wav" },
+                    { audioA: "generic_2/generic_n/audio_12.wav", audioB: "generic_2/generic/audio_12.wav" },
+                    { audioA: "generic_2/generic_n/audio_13.wav", audioB: "generic_2/generic/audio_13.wav" },
+                    { audioA: "generic_2/generic_n/audio_14.wav", audioB: "generic_2/generic/audio_14.wav" },
+                    { audioA: "generic_2/generic_n/audio_15.wav", audioB: "generic_2/generic/audio_15.wav" },
+                    { audioA: "generic_2/generic_n/audio_16.wav", audioB: "generic_2/generic/audio_16.wav" },
+                    { audioA: "generic_2/generic_n/audio_17.wav", audioB: "generic_2/generic/audio_17.wav" },
+                    { audioA: "generic_2/generic_n/audio_18.wav", audioB: "generic_2/generic/audio_18.wav" },
+                    { audioA: "generic_2/generic_n/audio_19.wav", audioB: "generic_2/generic/audio_19.wav" },
+                    { audioA: "generic_2/generic_n/audio_20.wav", audioB: "generic_2/generic/audio_20.wav" },
+                    { audioA: "generic_2/generic_n/audio_21.wav", audioB: "generic_2/generic/audio_21.wav" },
+                    { audioA: "generic_2/generic_n/audio_22.wav", audioB: "generic_2/generic/audio_22.wav" },
+                    { audioA: "generic_2/generic_n/audio_23.wav", audioB: "generic_2/generic/audio_23.wav" },
+                    { audioA: "generic_2/generic_n/audio_24.wav", audioB: "generic_2/generic/audio_24.wav" },
+                    { audioA: "generic_2/generic_n/audio_25.wav", audioB: "generic_2/generic/audio_25.wav" },
+                    { audioA: "generic_2/generic_n/audio_26.wav", audioB: "generic_2/generic/audio_26.wav" },
+                    { audioA: "generic_2/generic_n/audio_27.wav", audioB: "generic_2/generic/audio_27.wav" },
+                    { audioA: "generic_2/generic_n/audio_28.wav", audioB: "generic_2/generic/audio_28.wav" },
+                    { audioA: "generic_2/generic_n/audio_29.wav", audioB: "generic_2/generic/audio_29.wav" },
+                    { audioA: "generic_2/generic_n/audio_30.wav", audioB: "generic_2/generic/audio_30.wav" },
+                    { audioA: "generic_2/generic_n/audio_31.wav", audioB: "generic_2/generic/audio_31.wav" },
+                    { audioA: "generic_2/generic_n/audio_32.wav", audioB: "generic_2/generic/audio_32.wav" },
+                    { audioA: "generic_2/generic_n/audio_33.wav", audioB: "generic_2/generic/audio_33.wav" },
+                    { audioA: "generic_2/generic_n/audio_34.wav", audioB: "generic_2/generic/audio_34.wav" },
+                    { audioA: "generic_2/generic_n/audio_35.wav", audioB: "generic_2/generic/audio_35.wav" },
+                    { audioA: "generic_2/generic_n/audio_36.wav", audioB: "generic_2/generic/audio_36.wav" },
+                    { audioA: "generic_2/generic_n/audio_37.wav", audioB: "generic_2/generic/audio_37.wav" },
+                    { audioA: "generic_2/generic_n/audio_38.wav", audioB: "generic_2/generic/audio_38.wav" },
+                    { audioA: "generic_2/generic_n/audio_39.wav", audioB: "generic_2/generic/audio_39.wav" },
+                    { audioA: "generic_2/generic_n/audio_40.wav", audioB: "generic_2/generic/audio_40.wav" },
+                    { audioA: "generic_2/generic_n/audio_41.wav", audioB: "generic_2/generic/audio_41.wav" },
+                    { audioA: "generic_2/generic_n/audio_42.wav", audioB: "generic_2/generic/audio_42.wav" },
+                    { audioA: "generic_2/generic_n/audio_43.wav", audioB: "generic_2/generic/audio_43.wav" },
+                    { audioA: "generic_2/generic_n/audio_44.wav", audioB: "generic_2/generic/audio_44.wav" },
+                    { audioA: "generic_2/generic_n/audio_45.wav", audioB: "generic_2/generic/audio_45.wav" },
+                    { audioA: "generic_2/generic_n/audio_46.wav", audioB: "generic_2/generic/audio_46.wav" },
+                    { audioA: "generic_2/generic_n/audio_47.wav", audioB: "generic_2/generic/audio_47.wav" },
+                    { audioA: "generic_2/generic_n/audio_48.wav", audioB: "generic_2/generic/audio_48.wav" },
+                    { audioA: "generic_2/generic_n/audio_49.wav", audioB: "generic_2/generic/audio_49.wav" },
+                    { audioA: "generic_2/generic_n/audio_50.wav", audioB: "generic_2/generic/audio_50.wav" },
+                    { audioA: "generic_2/generic_n/audio_51.wav", audioB: "generic_2/generic/audio_51.wav" },
+                    { audioA: "generic_2/generic_n/audio_52.wav", audioB: "generic_2/generic/audio_52.wav" },
+                    { audioA: "generic_2/generic_n/audio_53.wav", audioB: "generic_2/generic/audio_53.wav" },
+                    { audioA: "generic_2/generic_n/audio_54.wav", audioB: "generic_2/generic/audio_54.wav" },
+                    { audioA: "generic_2/generic_n/audio_55.wav", audioB: "generic_2/generic/audio_55.wav" },
+                    { audioA: "generic_2/generic_n/audio_56.wav", audioB: "generic_2/generic/audio_56.wav" },
+                    { audioA: "generic_2/generic_n/audio_57.wav", audioB: "generic_2/generic/audio_57.wav" },
+                    { audioA: "generic_2/generic_n/audio_58.wav", audioB: "generic_2/generic/audio_58.wav" },
+                    { audioA: "generic_2/generic_n/audio_59.wav", audioB: "generic_2/generic/audio_59.wav" },
+                    { audioA: "generic_2/generic_n/audio_60.wav", audioB: "generic_2/generic/audio_60.wav" },
+                    { audioA: "generic_2/generic_n/audio_61.wav", audioB: "generic_2/generic/audio_61.wav" },
+                    { audioA: "generic_2/generic_n/audio_62.wav", audioB: "generic_2/generic/audio_62.wav" },
+                    { audioA: "generic_2/generic_n/audio_63.wav", audioB: "generic_2/generic/audio_63.wav" },
+                    { audioA: "generic_2/generic_n/audio_64.wav", audioB: "generic_2/generic/audio_64.wav" },
+                    { audioA: "generic_2/generic_n/audio_65.wav", audioB: "generic_2/generic/audio_65.wav" },
+                    { audioA: "generic_2/generic_n/audio_66.wav", audioB: "generic_2/generic/audio_66.wav" },
+                    { audioA: "generic_2/generic_n/audio_67.wav", audioB: "generic_2/generic/audio_67.wav" },
+                    { audioA: "generic_2/generic_n/audio_68.wav", audioB: "generic_2/generic/audio_68.wav" },
+                    { audioA: "generic_2/generic_n/audio_69.wav", audioB: "generic_2/generic/audio_69.wav" },
+                    { audioA: "generic_2/generic_n/audio_70.wav", audioB: "generic_2/generic/audio_70.wav" },
+                    { audioA: "generic_2/generic_n/audio_71.wav", audioB: "generic_2/generic/audio_71.wav" },
+                    { audioA: "generic_2/generic_n/audio_72.wav", audioB: "generic_2/generic/audio_72.wav" },
+                    { audioA: "generic_2/generic_n/audio_73.wav", audioB: "generic_2/generic/audio_73.wav" },
+                    { audioA: "generic_2/generic_n/audio_74.wav", audioB: "generic_2/generic/audio_74.wav" },
+                    { audioA: "generic_2/generic_n/audio_75.wav", audioB: "generic_2/generic/audio_75.wav" },
+                    { audioA: "generic_2/generic_n/audio_76.wav", audioB: "generic_2/generic/audio_76.wav" },
+                    { audioA: "generic_2/generic_n/audio_77.wav", audioB: "generic_2/generic/audio_77.wav" },
+                    { audioA: "generic_2/generic_n/audio_78.wav", audioB: "generic_2/generic/audio_78.wav" },
+                    { audioA: "generic_2/generic_n/audio_79.wav", audioB: "generic_2/generic/audio_79.wav" },
+                    { audioA: "generic_2/generic_n/audio_80.wav", audioB: "generic_2/generic/audio_80.wav" },
+                    { audioA: "generic_2/generic_n/audio_81.wav", audioB: "generic_2/generic/audio_81.wav" }
                     // 可以添加更多音频对
                 ]
             }
         ];
-
+        // 创建分组后的数据
+        const allGroups = createAudioGroups(originalPairs, 20);
+        
+        // 随机选择一个组
+        const randomGroupIndex = Math.floor(Math.random() * allGroups.length);
+        const audioGroups = [allGroups[randomGroupIndex]];
+        
         let currentGroupIndex = 0;
         let currentPairIndex = 0;
-        let scores = audioGroups.map(group => new Array(group.pairs.length).fill(null));
+        let scores = [new Array(20).fill(null)];
 
         function updateProgressBars() {
             const sections = document.querySelectorAll('.progress-section');
@@ -270,9 +295,30 @@
             });
         }
 
+        // 将原始音频对数组分组
+        function createAudioGroups(pairs, groupSize = 20) {
+            const groups = [];
+            for (let i = 0; i < pairs.length; i += groupSize) {
+                const groupPairs = pairs.slice(i, i + groupSize);
+                groups.push({
+                    title: `Listening and Rating (Group ${groups.length + 1})`,
+                    pairs: groupPairs
+                });
+            }
+            return groups;
+        }
+        
+        // 在开始测试时显示当前组的信息
         function startTest() {
             document.getElementById('introPage').classList.remove('active');
             document.getElementById('testPage').classList.add('active');
+            
+            // 显示当前正在测试的组号
+            const groupNumber = randomGroupIndex + 1;
+            const totalGroups = allGroups.length;
+            document.getElementById('groupTitle').textContent = 
+                `Listening and Rating (Group ${groupNumber} of ${totalGroups})`;
+            
             loadAudioPair();
         }
         function loadAudioPair() {
@@ -430,32 +476,31 @@
         function submitScores() {
             document.getElementById('testPage').classList.remove('active');
             document.getElementById('resultsPage').classList.add('active');
-
-            let resultsHtml = '';
-            scores.forEach((groupScores, groupIndex) => {
-                const total = groupScores.reduce((a, b) => a + b, 0);
-                const average = total / groupScores.length;
-                const variance = groupScores.reduce((a, b) => a + Math.pow(b - average, 2), 0) / groupScores.length;
-                const stdDev = Math.sqrt(variance);
-
-                resultsHtml += `
-                    <h3>${audioGroups[groupIndex].title}Result：</h3>
-                    <p>Mean：${average.toFixed(2)}</p>
-                    <p>Std：${stdDev.toFixed(2)}</p>
-                    <p>Details：${groupScores.join(', ')}</p>
-                    <hr>
-                `;
-            });
-
+        
+            // 添加组号信息到结果中
+            const groupNumber = randomGroupIndex + 1;
+            const groupScores = scores[0];
+            const total = groupScores.reduce((a, b) => a + b, 0);
+            const average = total / groupScores.length;
+            const variance = groupScores.reduce((a, b) => a + Math.pow(b - average, 2), 0) / groupScores.length;
+            const stdDev = Math.sqrt(variance);
+        
+            const resultsHtml = `
+                <h3>Results for Group ${groupNumber}：</h3>
+                <p>Mean：${average.toFixed(2)}</p>
+                <p>Std：${stdDev.toFixed(2)}</p>
+                <p>Details：${groupScores.join(', ')}</p>
+            `;
+        
             document.getElementById('results').innerHTML = resultsHtml;
-
+        
             // 发送数据到服务器
             const data = {
                 timestamp: new Date().toISOString(),
-                scores: scores
+                groupNumber: groupNumber,
+                scores: groupScores
             };
             console.log('Sending to server:', data);
-            // 实际发送数据的代码
         }
     </script>
 </body>
